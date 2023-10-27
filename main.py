@@ -5,6 +5,7 @@ from Renderer import Renderer
 from Model import Model
 from Shaders import *
 import glm
+from obj import Obj
 
 width = 960
 height = 540
@@ -15,17 +16,30 @@ clock = pygame.time.Clock()
 
 renderer = Renderer(screen)
 renderer.setShader(vertex_shader, fragment_shader)
-# x, y, z, r, g, b
-triangleData = [
-            -0.5, -0.5, 0.0, 1.0, 0.0, 0.0,
-            0.0, 0.5, 0.0, 0.0, 1.0, 0.0,
-            0.5, -0.5, 0.0, 0.0, 0.0, 1.0,]
 
-triangleModel = Model(triangleData)
-triangleModel.position .z = -5
-triangleModel.scale = glm.vec3(5, 5, 5)
+obj = Obj("models/skull/object.obj")
 
-renderer.scene.append(triangleModel)
+model_list = []
+model_data = []
+for face in obj.faces:
+
+    for vertex_info in face:
+        vertex_id, texcoord_id, normal_id = vertex_info
+
+        vertex = obj.vertices[vertex_id - 1]
+        normal = obj.normals[normal_id - 1]
+
+        model_data.extend(vertex + normal)
+
+    model = Model(model_data)
+    model_list.append(model)
+
+model = Model(model_data)
+model.position.z = -15
+model.position.y = -1
+model.scale = glm.vec3(0.007, 0.007, 0.007)
+
+renderer.scene.append(model)
 
 isRunning = True
 while isRunning:
