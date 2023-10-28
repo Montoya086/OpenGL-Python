@@ -5,13 +5,8 @@ from pygame.locals import *
 from Renderer import Renderer
 from Model import Model
 from Shaders import *
-<<<<<<< Updated upstream
-import glm
-from obj import Obj
-=======
 from obj import Obj
 
->>>>>>> Stashed changes
 
 width = 960
 height = 540
@@ -23,30 +18,6 @@ clock = pygame.time.Clock()
 renderer = Renderer(screen)
 renderer.setShader(vertex_shader, fragment_shader)
 
-<<<<<<< Updated upstream
-obj = Obj("models/skull/object.obj")
-
-model_list = []
-model_data = []
-for face in obj.faces:
-
-    for vertex_info in face:
-        vertex_id, texcoord_id, normal_id = vertex_info
-
-        vertex = obj.vertices[vertex_id - 1]
-        normal = obj.normals[normal_id - 1]
-
-        model_data.extend(vertex + normal)
-
-    model = Model(model_data)
-    model_list.append(model)
-
-model = Model(model_data)
-model.position.z = -15
-model.position.y = -1
-model.scale = glm.vec3(0.007, 0.007, 0.007)
-
-=======
 #Model loading
 obj = Obj("models/cone/object.obj")
 objData = []
@@ -64,7 +35,6 @@ model.loadTexture("models/cone/texture.bmp")
 model.position.z = -5
 model.position.y = -1
 model.scale = glm.vec3(5, 5, 5)
->>>>>>> Stashed changes
 renderer.scene.append(model)
 
 isRunning = True
