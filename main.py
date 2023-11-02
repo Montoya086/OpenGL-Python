@@ -19,22 +19,42 @@ renderer = Renderer(screen)
 renderer.setShader(vertex_shader, fragment_shader)
 
 #Model loading
-obj = Obj("models/cone/object.obj")
+obj = Obj("models/skull/object.obj")
 objData = []
 for face in obj.faces:
-    for vertexInfo in face:
-        vertexId, texcoordId, normalId = vertexInfo
-        vertex = obj.vertices[vertexId - 1]
-        normals = obj.normals[normalId - 1]
-        uv = obj.texcoords[texcoordId - 1]
-        objData.extend(vertex + uv + normals)
+    if len(face) == 3:
+        for vertexInfo in face:
+            vertexId, texcoordId, normalId = vertexInfo
+            vertex = obj.vertices[vertexId - 1]
+            normals = obj.normals[normalId - 1]
+            uv = obj.texcoords[texcoordId - 1]
+            uv = [uv[0], uv[1]]
+            objData.extend(vertex + uv + normals)
+    elif len(face) == 4:
+        for i in [0, 1, 2]:
+            vertexInfo = face[i]
+            vertexId, texcoordId, normalId = vertexInfo
+            vertex = obj.vertices[vertexId - 1]
+            normals = obj.normals[normalId - 1]
+            uv = obj.texcoords[texcoordId - 1]
+            uv = [uv[0], uv[1]]
+            objData.extend(vertex + uv + normals)
+        for i in [0, 2, 3]:
+            vertexInfo = face[i]
+            vertexId, texcoordId, normalId = vertexInfo
+            vertex = obj.vertices[vertexId - 1]
+            normals = obj.normals[normalId - 1]
+            uv = obj.texcoords[texcoordId - 1]
+            uv = [uv[0], uv[1]]
+            objData.extend(vertex + uv + normals)
 
 
 model = Model(objData)
-model.loadTexture("models/cone/texture.bmp")
-model.position.z = -5
-model.position.y = -1
-model.scale = glm.vec3(5, 5, 5)
+model.loadTexture("models/skull/texture.bmp")
+model.position.z = -10
+model.position.y = -2
+model.rotation.x = -90
+model.scale = glm.vec3(0.20, 0.20, 0.20)
 renderer.scene.append(model)
 
 isRunning = True
