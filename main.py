@@ -51,11 +51,14 @@ for face in obj.faces:
 
 model = Model(objData)
 model.loadTexture("models/skull/texture.bmp")
+model.loadNoiseTexture("models/skull/noise.jpg")
 model.position.z = -10
 model.position.y = -2
 model.rotation.x = -90
 model.scale = glm.vec3(0.20, 0.20, 0.20)
 renderer.scene.append(model)
+renderer.lightIntensity = 5.0
+renderer.dirLight = glm.vec3(0.0, 0.0, -1.0)
 
 isRunning = True
 while isRunning:
@@ -92,6 +95,24 @@ while isRunning:
         elif event.type == pygame.KEYDOWN:
             if event.key == pygame.K_ESCAPE:
                 isRunning = False
+            if event.key == pygame.K_1:
+                print("Original")
+                renderer.setShader(vertex_shader, fragment_shader)
+            if event.key == pygame.K_2:
+                print("Gourad")
+                renderer.setShader(vertex_shader, gourad_fragment_shader)
+            if event.key == pygame.K_3:
+                print("Cell")
+                renderer.setShader(vertex_shader, cell_fragment_shader)
+            if event.key == pygame.K_4:
+                print("Multicolor")
+                renderer.setShader(vertex_shader, multicolor_fragment_shader)
+            if event.key == pygame.K_5:
+                print("Noise")
+                renderer.setShader(vertex_shader, noise_fragment_shader)
+            if event.key == pygame.K_6:
+                print("Fire")
+                renderer.setShader(vertex_shader, fire_fragment_shader)
 
     renderer.render()
     pygame.display.flip()
