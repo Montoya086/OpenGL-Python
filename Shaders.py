@@ -20,6 +20,34 @@ vertex_shader = """
     }
 """
 
+heat_vertex_shader = """
+    #version 450 core
+    layout (location = 0) in vec3 position;
+    layout (location = 1) in vec2 texCoords;
+    layout (location = 2) in vec3 normals;
+
+    uniform mat4 modelMatrix;
+    uniform mat4 viewMatrix;
+    uniform mat4 projectionMatrix;
+    uniform float time;
+
+    out vec2 UVs;
+    out vec3 normal;
+
+    float random (vec3 scale) {
+        return fract(sin(dot(scale, vec3(12.9898, 78.233, 54.53))) * 43758.5453);
+    }
+
+    void main() {
+        float displacement = random(position + vec3(time)) * 0.3;
+        vec3 newPosition = position + normals * displacement;
+        gl_Position = projectionMatrix * viewMatrix * modelMatrix * vec4(newPosition, 1.0);
+        UVs = texCoords;
+        normal = (modelMatrix * vec4(normals, 0.0)).xyz;
+    }
+
+"""
+
 fragment_shader = """
     #version 450 core
     

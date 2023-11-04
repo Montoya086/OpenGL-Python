@@ -16,7 +16,12 @@ screen = pygame.display.set_mode((width, height), pygame.OPENGL | pygame.DOUBLEB
 clock = pygame.time.Clock()
 
 renderer = Renderer(screen)
-renderer.setShader(vertex_shader, fragment_shader)
+actual_Vertex_shader = vertex_shader
+actual_Fragment_shader = fragment_shader
+renderer.setShader(actual_Vertex_shader, actual_Fragment_shader)
+
+comand_list = 'c - Command List\nr - Reset Shaders\n1 - Gourad Fragment Shader\n2 - Cell Fragment Shader\n3 - Multicolor Fragment Shader\n4 - Noise Fragment Shader\n5 - Fire Fragment Shader\n6 - Heat Vertex Shader\n'
+print(comand_list)
 
 #Model loading
 obj = Obj("models/skull/object.obj")
@@ -95,24 +100,35 @@ while isRunning:
         elif event.type == pygame.KEYDOWN:
             if event.key == pygame.K_ESCAPE:
                 isRunning = False
+            if event.key == pygame.K_c:
+                print(comand_list)
+            if event.key == pygame.K_r:
+                print("Original Shaders")
+                actual_Fragment_shader = fragment_shader
+                actual_Vertex_shader = vertex_shader
             if event.key == pygame.K_1:
-                print("Original")
-                renderer.setShader(vertex_shader, fragment_shader)
+                print("Gourad Fragment Shader")
+                actual_Fragment_shader = gourad_fragment_shader
             if event.key == pygame.K_2:
-                print("Gourad")
-                renderer.setShader(vertex_shader, gourad_fragment_shader)
+                print("Cell Fragment Shader")
+                actual_Fragment_shader = cell_fragment_shader
             if event.key == pygame.K_3:
-                print("Cell")
-                renderer.setShader(vertex_shader, cell_fragment_shader)
+                print("Multicolor Fragment Shader")
+                actual_Fragment_shader = multicolor_fragment_shader
             if event.key == pygame.K_4:
-                print("Multicolor")
-                renderer.setShader(vertex_shader, multicolor_fragment_shader)
+                print("Noise Fragment Shader")
+                actual_Fragment_shader = noise_fragment_shader
             if event.key == pygame.K_5:
-                print("Noise")
-                renderer.setShader(vertex_shader, noise_fragment_shader)
+                print("Fire Fragment Shader")
+                actual_Fragment_shader = fire_fragment_shader
             if event.key == pygame.K_6:
-                print("Fire")
-                renderer.setShader(vertex_shader, fire_fragment_shader)
+                print("Heat Vertex Shader")
+                actual_Vertex_shader = heat_vertex_shader
+            
+            renderer.setShader(actual_Vertex_shader, actual_Fragment_shader)
+
+                
+
 
     renderer.render()
     pygame.display.flip()
