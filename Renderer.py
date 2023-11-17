@@ -12,6 +12,7 @@ class Renderer(object):
         #View Matrix
         self.cameraPosition = glm.vec3(0.0, 0.0, 0.0)
         self.cameraRotation = glm.vec3(0.0, 0.0, 0.0)
+        self.target = glm.vec3(0.0, 0.0, 0.0)
         #Projection Matrix
         self.projectionMatrix = glm.perspective(
             glm.radians(60.0),  #FOV
@@ -24,8 +25,18 @@ class Renderer(object):
         self.dirLight = glm.vec3(1, 0, 0)
         self.lightIntensity = 1.0
 
+        self.heatIntensity = 0.5
+
         glEnable(GL_DEPTH_TEST)
         glViewport(0, 0, self.width, self.height)
+
+    def updateViewMatrix(self):
+        #self.viewMatrix = self.getViewMatrix()
+        self.viewMatrix = glm.lookAt(
+            self.cameraPosition,
+            self.target,
+            glm.vec3(0.0, 1.0, 0.0)
+        )
 
     def getViewMatrix(self):
         identity = glm.mat4(1.0)
@@ -57,7 +68,7 @@ class Renderer(object):
                 glGetUniformLocation(self.activeShader, "viewMatrix"),
                 1,
                 GL_FALSE,
-                glm.value_ptr(self.getViewMatrix())
+                glm.value_ptr(self.viewMatrix)
             )
             glUniformMatrix4fv(
                 glGetUniformLocation(self.activeShader, "projectionMatrix"),
@@ -77,6 +88,10 @@ class Renderer(object):
             glUniform1f(
                 glGetUniformLocation(self.activeShader, "lightIntensity"),
                 self.lightIntensity
+            )
+            glUniform1f(
+                glGetUniformLocation(self.activeShader, "heatIntensity"),
+                self.heatIntensity
             )
 
         for obj in self.scene:

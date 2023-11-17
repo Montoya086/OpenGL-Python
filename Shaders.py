@@ -30,6 +30,7 @@ heat_vertex_shader = """
     uniform mat4 viewMatrix;
     uniform mat4 projectionMatrix;
     uniform float time;
+    uniform float heatIntensity;
 
     out vec2 UVs;
     out vec3 normal;
@@ -39,7 +40,7 @@ heat_vertex_shader = """
     }
 
     void main() {
-        float displacement = random(position + vec3(time)) * 0.3;
+        float displacement = random(position + vec3(time)) * heatIntensity;
         vec3 newPosition = position + normals * displacement;
         gl_Position = projectionMatrix * viewMatrix * modelMatrix * vec4(newPosition, 1.0);
         UVs = texCoords;
