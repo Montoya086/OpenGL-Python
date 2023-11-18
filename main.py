@@ -35,10 +35,10 @@ Right Arrow - Next Model
 Left Arrow - Previous Model
 Mouse Drag - Rotate Model
 Mouse Wheel - Zoom Model
-w - Move Camera up
-s - Move Camera down
-a - Move Camera left
-d - Move Camera right"""
+w - Move Camera Up
+s - Move Camera Down
+a - Rotate Camera Arround Left
+d - Rotate Camera Arround Right"""
 print(comand_list)
 
 modelIndex = 0
@@ -63,13 +63,14 @@ def modelChange(direction):
     renderer.heatIntensity = models[modelIndex]['heatIntensity']
     renderer.target = models[modelIndex]['lookAt']
     renderer.cameraPosition = glm.vec3(0.0, 0.0, 0.0)
+    renderer.dirLight = models[modelIndex]['dirLight']
 
 #Model loading
 #Skull
 obj_data = Obj("models/skull/object.obj").parse_data()
 model = Model(obj_data)
 model.loadTexture("models/skull/texture.bmp")
-model.loadNoiseTexture("models/noises/fire.jpg")
+model.loadNoiseTexture("noises/fire.jpg")
 model.position.z = -10
 model.position.y = -3
 model.rotation.x = -90
@@ -77,28 +78,60 @@ model.scale = glm.vec3(0.20, 0.20, 0.20)
 modelData = {"model": model, 
              "lightIntensity": 5.0, 
              "heatIntensity": 0.3, 
-             "lookAt": glm.vec3(model.position.x, model.position.y + 2 , model.position.z)}
+             "lookAt": glm.vec3(model.position.x, model.position.y + 2 , model.position.z),
+             "dirLight": glm.vec3(0, 0, -1)}
 models.append(modelData)
 
 #Cone
 obj_data = Obj("models/cone/object.obj").parse_data()
 model = Model(obj_data)
 model.loadTexture("models/cone/texture.bmp")
-model.loadNoiseTexture("models/noises/fire.jpg")
+model.loadNoiseTexture("noises/fire.jpg")
 model.position.z = -1
 model.position.y = -2
 model.scale = glm.vec3(7, 7, 7)
 modelData = {"model": model, 
              "lightIntensity": 1.0, 
              "heatIntensity": 0.005, 
-             "lookAt": glm.vec3(model.position.x, model.position.y + 0.5 , model.position.z)}
+             "lookAt": glm.vec3(model.position.x, model.position.y + 0.5 , model.position.z),
+             "dirLight": glm.vec3(0, 0, -1)}
+models.append(modelData)
+
+#Books
+obj_data = Obj("models/books/object.obj").parse_data()
+model = Model(obj_data)
+model.loadTexture("models/books/texture.bmp")
+model.loadNoiseTexture("noises/fire.jpg")
+model.position.z = -4
+model.position.y = -2
+model.scale = glm.vec3(0.1, 0.1, 0.1)
+modelData = {"model": model, 
+             "lightIntensity": 30.0, 
+             "heatIntensity": 0.08, 
+             "lookAt": glm.vec3(model.position.x, model.position.y + 0.5 , model.position.z),
+             "dirLight": glm.vec3(0, -0.75, -1)}
+models.append(modelData)
+
+#Desk
+obj_data = Obj("models/desk/object.obj").parse_data()
+model = Model(obj_data)
+model.loadTexture("models/desk/texture.bmp")
+model.loadNoiseTexture("noises/fire.jpg")
+model.position.z = -4
+model.position.y = -3
+model.scale = glm.vec3(0.5, 0.5, 0.5)
+modelData = {"model": model, 
+             "lightIntensity": 5.0, 
+             "heatIntensity": 0.08, 
+             "lookAt": glm.vec3(model.position.x, model.position.y + 0.5 , model.position.z),
+             "dirLight": glm.vec3(0, -0.75, -1)}
 models.append(modelData)
 
 renderer.scene.append(models[modelIndex]['model'])
 renderer.lightIntensity = models[modelIndex]['lightIntensity']
 renderer.heatIntensity = models[modelIndex]['heatIntensity']
 renderer.target = models[modelIndex]['lookAt']
-renderer.dirLight = glm.vec3(0.0, 0.0, -1.0)
+renderer.dirLight = models[modelIndex]['dirLight']
 
 isRunning = True
 movement_sensitive = 0.1
