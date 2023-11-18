@@ -135,7 +135,8 @@ renderer.dirLight = models[modelIndex]['dirLight']
 
 isRunning = True
 movement_sensitive = 0.1
-angle_sensitive = 1
+sens_x = 1
+sens_y = 0.1
 distance = abs(renderer.cameraPosition.z- models[modelIndex]['model'].position.z)
 radius = distance
 zoom_sensitive = 0.5
@@ -143,19 +144,6 @@ angle = 0.0
 while isRunning:
     deltaTime = clock.tick(60) / 1000.0
     renderer.elapsedTime += deltaTime
-    keys = pygame.key.get_pressed()
-    if keys[pygame.K_w]:
-        renderer.cameraPosition.y += movement_sensitive
-    if keys[pygame.K_s]:
-        renderer.cameraPosition.y -= movement_sensitive
-    if keys[pygame.K_a]:
-        angle += angle_sensitive
-        if angle > 360:
-            angle = 0
-    if keys[pygame.K_d]:
-        angle -= angle_sensitive
-        if angle > 360:
-            angle = 0
         
     renderer.cameraPosition.x = math.sin(math.radians(angle)) * radius + models[modelIndex]['model'].position.x
     renderer.cameraPosition.z = math.cos(math.radians(angle)) * radius + models[modelIndex]['model'].position.z
@@ -216,8 +204,13 @@ while isRunning:
                 new_position = pygame.mouse.get_pos()
                 deltax = new_position[0] - old_position[0]
                 deltay = new_position[1] - old_position[1]
-                models[modelIndex]['model'].rotation.y += deltax * movement_sensitive
-                models[modelIndex]['model'].rotation.x += deltay * movement_sensitive
+                angle += deltax * -sens_x
+
+                if angle > 360:
+                    angle = 0
+
+                if distance > renderer.cameraPosition.y + deltay * -sens_y and distance * -1.5 < renderer.cameraPosition.y + deltay * -sens_y:
+                    renderer.cameraPosition.y += deltay * -sens_y
 
                 old_position = new_position
             
