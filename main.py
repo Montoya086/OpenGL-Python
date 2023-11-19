@@ -15,7 +15,8 @@ height = 540
 pygame.init()
 screen = pygame.display.set_mode((width, height), pygame.OPENGL | pygame.DOUBLEBUF)
 clock = pygame.time.Clock()
-
+pygame.mixer.music.load("music/skeleton.mp3")
+pygame.mixer.music.play(-1)
 renderer = Renderer(screen)
 actual_Vertex_shader = vertex_shader
 actual_Fragment_shader = fragment_shader
@@ -64,6 +65,10 @@ def modelChange(direction):
     renderer.target = models[modelIndex]['lookAt']
     renderer.cameraPosition = glm.vec3(0.0, 0.0, 0.0)
     renderer.dirLight = models[modelIndex]['dirLight']
+    if modelIndex == 0:
+        pygame.mixer.music.play(-1)
+    else:
+        pygame.mixer.music.stop()
 
 #Model loading
 #Skull
